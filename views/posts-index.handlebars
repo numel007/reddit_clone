@@ -6,7 +6,7 @@
         {{!-- Note: Handlebars does not like spaces between braces and keywords apparently --}}
         {{#each posts}}
             <li class='list-group-item'>
-                <div class='lead'>{{this.title}}</div>
+                <div class="lead"><a href="/posts/{{this._id}}">{{this.title}}</a></div>
                 <a href="{{this.url}}" target="_blank">{{this.url}}</a>
             </li>
         {{/each}}

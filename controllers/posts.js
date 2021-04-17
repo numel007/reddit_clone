@@ -7,11 +7,11 @@ module.exports = app => {
     // Create Post
     app.post("/posts/new", (req, res) => {
         console.log('Recieved post')
-        console.log(req.body)
         const post = new Post(req.body)
         console.log(post)
 
         new_post = Post.findById(post.id)
+        console.log(`New post's id: ${new_post.id}`)
 
         post.save((err, post) => {
             if (err) {
@@ -34,4 +34,16 @@ module.exports = app => {
                 console.log(err.message);
             })
     })
+
+    // Display specific post by ID
+    app.get('/posts/:id', function(req, res) {
+        // Filter posts by ID
+        Post.findById(req.params.id).lean()
+        .then(selectedPost => {
+            res.render("posts-show", {selectedPost});
+        }).catch(err => {
+            console.log(err.message);
+        })
+    })
+
 }
