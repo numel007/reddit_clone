@@ -21,4 +21,17 @@ module.exports = app => {
             }
         })
     })
+
+    // Get all posts
+    app.get('/', (req, res) => {
+        Post.find({}).lean()
+            // Return lean version of all stored posts as 'posts'
+            .then(posts => {
+                // Passes 'posts' to template
+                res.render('posts-index', {posts});
+            })
+            .catch(err => {
+                console.log(err.message);
+            })
+    })
 }

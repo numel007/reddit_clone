@@ -1,0 +1,15 @@
+<h1>Posts Index page</h1>
+
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <ul>
+        {{!-- Note: Handlebars does not like spaces between braces and keywords apparently --}}
+        {{#each posts}}
+            <li class='list-group-item'>
+                <div class='lead'>{{this.title}}</div>
+                <a href="{{this.url}}" target="_blank">{{this.url}}</a>
+            </li>
+        {{/each}}
+    </ul>
+  </div>
+</div>
