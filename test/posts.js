@@ -57,11 +57,13 @@ describe("Posts", function() {
 
     // Delete post after testing
     after(function () {
-        Post.findOneAndDelete(newPost)
-        .then(function(res) {
+        // findOneAndDelete requires a callback parameter, don't forget!
+        Post.findOneAndDelete(newPost, function(err, res) {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log(`Deleted ${res}.`);
+            }
         })
-        .catch(function (err) {
-            console.log(err)
-        });
     })
 })
