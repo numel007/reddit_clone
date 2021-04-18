@@ -13,7 +13,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
 app.use(expressValidator());
 
+// Import controller routes
 require('./controllers/posts.js')(app);
+require('./controllers/comments.js')(app);
+
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars')
 
@@ -21,11 +24,6 @@ app.set('view engine', 'handlebars')
 app.get('/', (req, res) => {
     res.render('home');
 })
-
-// app.get('/posts/new', (req, res) => {
-//     console.log('Loading posts-new')
-//     res.render('posts-new');
-// })
 
 // Server start
 app.listen(3000, () => {

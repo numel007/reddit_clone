@@ -41,6 +41,9 @@ module.exports = app => {
     app.get('/posts/:id', function(req, res) {
         // Filter posts by ID
         Post.findById(req.params.id).lean()
+        // Get associated post's associated comments, specifically the comment object (not comment ID)
+        .populate('comments')
+        // Now selectedPost object includes associated comments
         .then(selectedPost => {
             res.render("posts-show", {selectedPost});
         }).catch(err => {
