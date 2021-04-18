@@ -22,10 +22,10 @@ app.get('/', (req, res) => {
     res.render('home');
 })
 
-app.get('/posts/new', (req, res) => {
-    console.log('Loading posts-new')
-    res.render('posts-new');
-})
+// app.get('/posts/new', (req, res) => {
+//     console.log('Loading posts-new')
+//     res.render('posts-new');
+// })
 
 // Server start
 app.listen(3000, () => {

@@ -6,12 +6,9 @@ const Post = require('../models/posts');
 module.exports = app => {
     // Create Post
     app.post("/posts/new", (req, res) => {
-        console.log('Recieved post')
         const post = new Post(req.body)
-        console.log(post)
 
         new_post = Post.findById(post.id)
-        console.log(`New post's id: ${new_post.id}`)
 
         post.save((err, post) => {
             if (err) {
@@ -20,7 +17,7 @@ module.exports = app => {
                 return res.redirect('/')
             }
         })
-    })
+    });
 
     // Get all posts
     app.get('/', (req, res) => {
@@ -33,6 +30,11 @@ module.exports = app => {
             .catch(err => {
                 console.log(err.message);
             })
+    });
+
+    app.get('/posts/new', (req, res) => {
+        console.log('Loading posts-new')
+        res.render('posts-new');
     })
 
     // Display specific post by ID
@@ -44,6 +46,19 @@ module.exports = app => {
         }).catch(err => {
             console.log(err.message);
         })
-    })
+    });
 
+    app.get('/n/:subreddit', function(req, res) {
+        console.log(req.params.subreddit)
+        // Find only posts from specified subreddit
+        Post.find({subreddit: req.params.subreddit})
+        .lean()
+        .then(posts => {
+            // Build posts-index with only specified posts
+            res.render("posts-index", {posts})
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    });
 }
