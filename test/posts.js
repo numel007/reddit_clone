@@ -5,6 +5,7 @@ const expect = chai.expect;
 
 const Post = require('../models/posts');
 const server = require('../server');
+const { isValidObjectId } = require('mongoose');
 
 const should = chai.should();
 chai.use(chaiHTTP)
@@ -16,7 +17,8 @@ describe("Posts", function() {
     const newPost = {
         title: 'test post',
         url: 'https://www.google.com',
-        summary: 'test post summary'
+        summary: 'test post summary',
+        subreddit: 'subreddit-for-mocha'
     };
 
     it("Should create a new POST for /posts/new", function(done) {
@@ -54,7 +56,12 @@ describe("Posts", function() {
     })
 
     // Delete post after testing
-    after(function() {
-        Post.findOneAndDelete(newPost);
+    after(function () {
+        Post.findOneAndDelete(newPost)
+        .then(function(res) {
+        })
+        .catch(function (err) {
+            console.log(err)
+        });
     })
 })
