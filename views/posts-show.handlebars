@@ -2,7 +2,8 @@
   <div class="col-sm-6 col-sm-offset-3">
     <a href="{{selectedPost.url}}" class="lead">{{selectedPost.title}}</a>
     <p>{{selectedPost.summary}}</p>
-    <h2>Commments</h2>
+    <p>{{selectedPost.author.username}}</p>
+    <h2>Comments</h2>
     <ul>
       {{#each selectedPost.comments}}
       <li class='list-group-item'>
