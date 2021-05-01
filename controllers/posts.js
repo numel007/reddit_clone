@@ -60,10 +60,11 @@ module.exports = (app) => {
     // Filter posts by ID
     Post.findById(req.params.id)
       .lean()
-      // Get associated post's associated comments, specifically the comment object (not comment ID)
-      .populate("comments")
+      // Selects comments and populates them with comments' authors
+      .populate({ path: "comments", populate: { path: "author" } })
+      // Populates with post's author
       .populate("author")
-      // Now selectedPost object includes associated comments
+      // Now selectedPost object includes associated comments, comment authors, and the post author
       .then((selectedPost) => {
         res.render("posts-show", { selectedPost, currentUser });
       })

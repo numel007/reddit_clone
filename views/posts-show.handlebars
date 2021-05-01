@@ -8,6 +8,7 @@
       {{#each selectedPost.comments}}
       <li class='list-group-item'>
         <p>{{this.content}}</p>
+        <p>Comment author: {{this.author.username}}</p>
       </li>
       {{/each}}
     </ul>
