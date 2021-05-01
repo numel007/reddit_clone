@@ -1,20 +1,20 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
-const schema = mongoose.Schema;
 
-const UserSchema = new mongoose.Schema(
+const UserSchema = new Schema(
   {
     createdAt: { type: Date },
     updatedAt: { type: Date },
     password: { type: String, select: false },
     username: { type: String, required: true },
+    posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
   },
-  {
-    timestamps: { createdAt: "created_at" },
-  }
+  { timestamps: { createdAt: "created_at" } }
 );
 
 UserSchema.pre("save", function (next) {
+  //Encrypt pw
   const user = this;
   if (!user.isModified("password")) {
     return next();
@@ -28,7 +28,7 @@ UserSchema.pre("save", function (next) {
 });
 
 UserSchema.methods.comparePassword = function (password, done) {
-  bcrype.compare(password, this.password, (err, isMatch) => {
+  bcrypt.compare(password, this.password, (err, isMatch) => {
     done(err, isMatch);
   });
 };
