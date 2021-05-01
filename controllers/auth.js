@@ -39,6 +39,7 @@ module.exports = (app) => {
     // Errors if not passing the selected field 'username password'
     User.findOne({ username: req.body.username }, "username password")
       .then((user) => {
+        console.log(user);
         if (!user) {
           return res.status(401).send({ message: "Username not found." });
         }

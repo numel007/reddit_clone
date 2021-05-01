@@ -11,11 +11,25 @@ require("./data/reddit-db");
 // Middleware
 const exphbs = require("express-handlebars");
 const expressValidator = require("express-validator");
+var checkAuth = (req, res, next) => {
+  console.log("Checking auth");
+  if (typeof req.cookies.nToken == "undefined" || req.cookies.nToken === null) {
+    console.log("No valid cookie found");
+    req.user = null;
+  } else {
+    var token = req.cookies.nToken;
+    // complete: true returns payload with header and signature. Missing this option only returns payload.
+    var decodedToken = jwt.decode(token, { complete: true }) || {};
+    req.user = decodedToken.payload;
+  }
+  next();
+};
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(expressValidator());
 app.use(cookieParser());
+app.use(checkAuth);
 
 // Import controller routes
 require("./controllers/posts.js")(app);
