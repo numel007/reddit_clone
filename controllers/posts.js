@@ -20,9 +20,10 @@ module.exports = (app) => {
         })
         .then((user) => {
           // Add new post to user's posts array
+          console.log("----ADDING POST TO USER----");
           user.posts.unshift(post);
           user.save();
-          console.log(user);
+          console.log("----SAVING USER----");
           res.redirect(`/posts/${post._id}`);
         })
         .catch((err) => {

@@ -4,6 +4,7 @@ const chaiHTTP = require("chai-http");
 const expect = chai.expect;
 
 const Post = require("../models/posts");
+const User = require("../models/user");
 const server = require("../server");
 const { isValidObjectId } = require("mongoose");
 
@@ -20,6 +21,24 @@ describe("Posts", function () {
     summary: "test post summary",
     subreddit: "subreddit-for-mocha",
   };
+
+  const newUser = {
+    username: "poststest",
+    password: "poststest",
+  };
+
+  before(function (done) {
+    agent
+      .post("/sign-up")
+      .set("content-type", "application/x-www-form-urlencoded")
+      .send(newUser)
+      .then(function (res) {
+        done();
+      })
+      .catch(function (err) {
+        done(err);
+      });
+  });
 
   it("Should create a new POST for /posts/new", function (done) {
     // Get current number of posts before adding another post
@@ -57,14 +76,20 @@ describe("Posts", function () {
   });
 
   // Delete post after testing
-  after(function () {
-    // findOneAndDelete requires a callback parameter, don't forget!
-    Post.findOneAndDelete(newPost, function (err, res) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(`Deleted ${res}.`);
-      }
-    });
+  after(function (done) {
+    Post.findOneAndDelete(newPost)
+      .then(function (res) {
+        agent.close();
+        User.findOneAndDelete({ username: newUser.username })
+          .then(function (res) {
+            done();
+          })
+          .catch(function (err) {
+            done(err);
+          });
+      })
+      .catch(function (res) {
+        done(err);
+      });
   });
 });
