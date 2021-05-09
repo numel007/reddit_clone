@@ -60,11 +60,8 @@ module.exports = (app) => {
     var currentUser = req.user;
     // Filter posts by ID
     Post.findById(req.params.id)
+      .populate("comments")
       .lean()
-      // Selects comments and populates them with comments' authors
-      .populate({ path: "comments", populate: { path: "author" } })
-      // Populates with post's author
-      .populate("author")
       // Now selectedPost object includes associated comments, comment authors, and the post author
       .then((selectedPost) => {
         res.render("posts-show", { selectedPost, currentUser });
@@ -76,11 +73,9 @@ module.exports = (app) => {
 
   app.get("/n/:subreddit", function (req, res) {
     var currentUser = req.user;
-    console.log(req.params.subreddit);
     // Find only posts from specified subreddit
     Post.find({ subreddit: req.params.subreddit })
       .lean()
-      .populate("author")
       .then((posts) => {
         // Build posts-index with only specified posts
         res.render("posts-index", { posts, currentUser });

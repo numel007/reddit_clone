@@ -14,19 +14,15 @@ module.exports = (app) => {
     // Save document to database
     newComment
       .save()
-      .then((newComment) => {
-        // Return comment's parent Post
-        return Post.findById(req.params.postId);
+      .then(() => {
+        return Promise.all([Post.findById(req.params.postId)]);
       })
-      .then((parentPost) => {
-        // Add new comment to parentPost's comments list
-        parentPost.comments.unshift(newComment);
-        // Save and return a promise
-        return parentPost.save();
+      .then(([post, user]) => {
+        post.comments.unshift(newComment);
+        return Promise.all([post.save()]);
       })
       .then((post) => {
-        // Redirect to homepage after saving comment to parentPost
-        res.redirect("/");
+        res.redirect(`/posts/${req.params.postId}`);
       })
       .catch((err) => {
         console.log(err);
