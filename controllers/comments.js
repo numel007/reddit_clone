@@ -8,20 +8,20 @@ const User = require("../models/user");
 module.exports = (app) => {
   // Create comment
   app.post("/posts/:postId/comments", function (req, res) {
-    const newComment = new Comment(req.body);
-    newComment.author = req.user._id;
+    const comment = new Comment(req.body);
+    comment.author = req.user._id;
 
     // Save document to database
-    newComment
+    comment
       .save()
       .then(() => {
         return Promise.all([Post.findById(req.params.postId)]);
       })
-      .then(([post, user]) => {
-        post.comments.unshift(newComment);
+      .then(([post]) => {
+        post.comments.unshift(comment);
         return Promise.all([post.save()]);
       })
-      .then((post) => {
+      .then(() => {
         res.redirect(`/posts/${req.params.postId}`);
       })
       .catch((err) => {

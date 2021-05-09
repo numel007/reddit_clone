@@ -4,14 +4,9 @@
     <p>{{selectedPost.summary}}</p>
     <p>{{selectedPost.author.username}}</p>
     <h2>Comments</h2>
-    <ul>
-      {{#each selectedPost.comments}}
-      <li class='list-group-item'>
-        <p>{{this.content}}</p>
-        <p>Comment author: {{this.author.username}}</p>
-      </li>
-      {{/each}}
-    </ul>
+    {{#each selectedPost.comments}}
+    {{> comment comment=this postId=../post._id}}
+    {{/each}}
   </div>
 
   <form action="/posts/{{selectedPost._id}}/comments" method="post">

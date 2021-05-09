@@ -6,6 +6,7 @@ const CommentSchema = new Schema(
   {
     content: { type: String, required: true },
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   },
   {
     // uses Mongoose 4.0 timestamps option
