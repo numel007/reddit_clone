@@ -39,6 +39,7 @@ require("./controllers/replies.js")(app);
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
+app.use(express.static("public"));
 
 // Routes
 app.get("/", (req, res) => {
